@@ -51,11 +51,42 @@ class Pyraminx(object):
         print(" " * 13 + format_layer(self.faces["D"][1]))
         print(" " * 13 + format_layer(self.faces["D"][0]))
 
+    def move(self, move: str):
+        """
+        Rotate the Pyraminx according to the given move
+        The move is a string of the form have 16 possible moves:
+        Include the combination of 4 corners(l r u b)
+        and 2 layers(lower case and upper case)
+        and 2 directions("" and "'")
+
+        Args:
+            move (str): The move to be executed
+        """
+
+        if len(move) == 1:
+            clockwise = True
+        elif len(move) == 2:
+            clockwise = False
+        else:
+            raise ValueError("Invalid move")
+
+        if move[0].islower():
+            layer = 1
+        else:
+            layer = 2
+
+        self.rotate(move[0].upper(), clockwise, layer)
+
+    def rotate(self, corner: str, clockwise: bool, layer: int):
+        print(f"Rotate {corner} with clockwise={clockwise} and layer={layer}")
+
 
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
+    pyramix.move("l")
+    pyramix.move("L")
 
 
 if __name__ == "__main__":
