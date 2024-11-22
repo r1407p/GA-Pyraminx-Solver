@@ -1,1 +1,1 @@
-# GA-Pyramix-Solver
+# GA-Pyraminx-Solver
