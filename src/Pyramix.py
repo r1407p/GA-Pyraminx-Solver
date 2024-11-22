@@ -69,7 +69,7 @@ class Pyraminx(object):
         print(" " * 13 + format_layer(self.faces["D"][1]))
         print(" " * 13 + format_layer(self.faces["D"][0]))
 
-    def move(self, move: str):
+    def move(self, move: str, display=False):
         """
         Rotate the Pyraminx according to the given move
         The move is a string of the form have 16 possible moves:
@@ -93,7 +93,7 @@ class Pyraminx(object):
         else:
             layer = 2
 
-        self.rotate(move[0].upper(), clockwise, layer)
+        self.rotate(move[0].upper(), clockwise, layer, display)
 
     def __find__switching_trio(self, corner: str, layer: int):
         """
@@ -113,7 +113,37 @@ class Pyraminx(object):
                     [("F", (1, 1)), ("R", (1, 1)), ("L", (1, 1))],
                     [("F", (1, 2)), ("R", (1, 2)), ("L", (1, 2))],
                 ]
-
+        elif corner == "L":
+            if layer == 1:
+                return [[("F", (2, 0)), ("L", (2, 4)), ("D", (2, 0))]]
+            elif layer == 2:
+                return [
+                    [("F", (2, 0)), ("L", (2, 4)), ("D", (2, 0))],
+                    [("F", (1, 0)), ("L", (2, 2)), ("D", (2, 2))],
+                    [("F", (2, 1)), ("L", (2, 3)), ("D", (2, 1))],
+                    [("F", (2, 2)), ("L", (1, 2)), ("D", (1, 0))],
+                ]
+        elif corner == "R":
+            if layer ==1:
+                return [[("F", (2, 4)), ("D", (2, 4)), ("R", (2, 0))]]
+            elif layer == 2:
+                return [
+                    [("F", (2, 4)), ("D", (2, 4)), ("R", (2, 0))],
+                    [("F", (1, 2)), ("D", (2, 2)), ("R", (2, 2))],
+                    [("F", (2, 3)), ("D", (2, 3)), ("R", (2, 1))],
+                    [("F", (2, 2)), ("D", (1, 2)), ("R", (1, 0))]
+                ]
+        elif corner == "B":
+            if layer == 1:
+                return [[("R", (2, 4)), ("D", (0, 0)), ("L", (2, 0))]]
+            elif layer == 2:
+                return [
+                    [("R", (2, 4)), ("D", (0, 0)), ("L", (2, 0))],
+                    [("R", (1, 2)), ("D", (1, 2)), ("L", (2, 2))],
+                    [("R", (2, 3)), ("D", (1, 1)), ("L", (2, 1))],
+                    [("R", (2, 2)), ("D", (1, 0)), ("L", (1, 0))]
+                ]
+            
     def __rotate_face(self, switching_trios: list, clockwise: bool):
         """
         Rotate the given switching trios in the given direction
@@ -167,14 +197,13 @@ def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
-    pyramix.move("u")
-    pyramix.display()
-    pyramix.move("U")
-    pyramix.display()
-    pyramix.move("U'")
-    pyramix.display()
-    pyramix.move("u'")
-    pyramix.display()
+    # return 
+    while True:
+        move = input("Enter move: ")
+        if move == "q":
+            break
+        pyramix.move(move, display=True)
+        pyramix.display()
 
 
 if __name__ == "__main__":
