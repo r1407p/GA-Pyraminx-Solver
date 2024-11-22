@@ -1,14 +1,19 @@
+import os
+
 from pygad import GA
 
 
 class PyraminxGA:
     def __init__(self):
-        pass
+        self._makedir()
 
-    def run_stage(self, stage: int, save_dir: str = "data", **kwargs):
+    def _run_stage(self, stage: int, save_dir: str = "data", **kwargs):
         ga = GA(**kwargs)
         ga.run()
         ga.plot_fitness(save_dir=f"{save_dir}/fitness_stage{stage}.png")
+
+    def run(self):
+        pass
 
     def best_solution(self):
         pass
@@ -16,5 +21,7 @@ class PyraminxGA:
     def best_solution_generation(self):
         pass
 
-    def run(self):
-        pass
+    def _makedir(self):
+        os.chdir(f"{os.path.dirname(os.path.abspath(__file__))}/..")
+        if not os.path.exists("data"):
+            os.makedirs("data")
