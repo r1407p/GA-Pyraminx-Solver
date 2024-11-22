@@ -39,9 +39,9 @@ class Pyraminx(object):
             """
             Formats a given layer by centering its elements with padding and applying colorization.
             """
-            padding_len = (11 - len(" ".join(layer)))//2
-            padding = " "* padding_len
-            return padding+ " ".join([self._colorize(c) for c in layer])+ padding
+            padding_len = (11 - len(" ".join(layer))) // 2
+            padding = " " * padding_len
+            return padding + " ".join([self._colorize(c) for c in layer]) + padding
 
         print(
             "\n"
@@ -95,16 +95,86 @@ class Pyraminx(object):
 
         self.rotate(move[0].upper(), clockwise, layer)
 
-    def rotate(self, corner: str, clockwise: bool, layer: int):
-        print(f"Rotate {corner} with clockwise={clockwise} and layer={layer}")
+    def __find__switching_trio(self, corner: str, layer: int):
+        """
+        Find the switching trios for
+        the given corner and layer
+        Args:
+            corner (str): The corner to be rotated
+            layer (int): The layer to be rotated
+        """
+        if corner == "U":
+            if layer == 1:
+                return [[("F", (0, 0)), ("R", (0, 0)), ("L", (0, 0))]]
+            elif layer == 2:
+                return [
+                    [("F", (0, 0)), ("R", (0, 0)), ("L", (0, 0))],
+                    [("F", (1, 0)), ("R", (1, 0)), ("L", (1, 0))],
+                    [("F", (1, 1)), ("R", (1, 1)), ("L", (1, 1))],
+                    [("F", (1, 2)), ("R", (1, 2)), ("L", (1, 2))],
+                ]
+
+    def __rotate_face(self, switching_trios: list, clockwise: bool):
+        """
+        Rotate the given switching trios in the given direction
+        Args:
+            switching_trios (list): The list of switching trios to be rotated
+            clockwise (bool): The direction of the rotation
+        """
+        for trio in switching_trios:
+            faces = [pixel[0] for pixel in trio]
+            cord0 = [pixel[1][0] for pixel in trio]
+            cord1 = [pixel[1][1] for pixel in trio]
+            if clockwise:
+                (
+                    self.faces[faces[0]][cord0[0]][cord1[0]],
+                    self.faces[faces[1]][cord0[1]][cord1[1]],
+                    self.faces[faces[2]][cord0[2]][cord1[2]],
+                ) = (
+                    self.faces[faces[1]][cord0[1]][cord1[1]],
+                    self.faces[faces[2]][cord0[2]][cord1[2]],
+                    self.faces[faces[0]][cord0[0]][cord1[0]],
+                )
+            else:
+                (
+                    self.faces[faces[0]][cord0[0]][cord1[0]],
+                    self.faces[faces[1]][cord0[1]][cord1[1]],
+                    self.faces[faces[2]][cord0[2]][cord1[2]],
+                ) = (
+                    self.faces[faces[2]][cord0[2]][cord1[2]],
+                    self.faces[faces[0]][cord0[0]][cord1[0]],
+                    self.faces[faces[1]][cord0[1]][cord1[1]],
+                )
+
+    def rotate(self, corner: str, clockwise: bool, layer: int, display=False):
+        """
+        Rotate the Pyraminx according to the given move
+        
+        args:
+            corner (str): The corner to be rotated
+            clockwise (bool): The direction of the rotation
+            layer (int): The layer to be rotated
+            display (bool): Whether to display the Pyraminx after the rotation
+        
+        """
+        if display:
+            print(f"Rotate {corner} with clockwise={clockwise} and layer={layer}")
+        switching_trio = self.__find__switching_trio(corner, layer)
+        self.__rotate_face(switching_trio, clockwise)
 
 
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
-    pyramix.move("l")
-    pyramix.move("L")
+    pyramix.move("u")
+    pyramix.display()
+    pyramix.move("U")
+    pyramix.display()
+    pyramix.move("U'")
+    pyramix.display()
+    pyramix.move("u'")
+    pyramix.display()
 
 
 if __name__ == "__main__":
