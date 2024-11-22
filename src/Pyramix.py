@@ -17,13 +17,31 @@ class Pyraminx(object):
             "D": [["B"], ["B", "B", "B"], ["B", "B", "B", "B", "B"]],
         }
 
+    def _colorize(self, char):
+        """
+        Returns the ANSI escape code for the given color character.
+        """
+        colors = {
+            "Y": "\033[93m",  # Yellow
+            "G": "\033[92m",  # Green
+            "R": "\033[91m",  # Red
+            "B": "\033[94m",  # Blue
+        }
+        reset = "\033[0m"
+        return f"{colors.get(char, '')}{char}{reset}"
+
     def display(self):
         """
         Display the Pyraminx in a triangular format similar to the provided image.
         """
 
         def format_layer(layer):
-            return " ".join(layer).center(11)
+            """
+            Formats a given layer by centering its elements with padding and applying colorization.
+            """
+            padding_len = (11 - len(" ".join(layer)))//2
+            padding = " "* padding_len
+            return padding+ " ".join([self._colorize(c) for c in layer])+ padding
 
         print(
             "\n"
