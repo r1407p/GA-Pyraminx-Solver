@@ -1,4 +1,5 @@
 import os
+from collections import namedtuple
 
 from pygad import GA
 
@@ -11,9 +12,8 @@ class PyraminxGA:
         ga = GA(**kwargs)
         ga.run()
         ga.plot_fitness(save_dir=f"{save_dir}/fitness_stage{stage}.png")
-
-    def run(self):
-        pass
+        solution, fitness, _ = ga.best_solution()
+        return PyraminxGA.StageResult(solution, fitness, ga.generations_completed, self._is_solved(stage, fitness=fitness))
 
     def best_solution(self):
         pass
