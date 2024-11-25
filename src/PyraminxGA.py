@@ -8,6 +8,13 @@ class PyraminxGA:
     def __init__(self):
         self._makedir()
 
+    def _is_solved(self, stage: int, *, target: int | None = None, fitness: int | None = None):
+        if target:
+            return target == PyraminxGA.TARGET[stage - 1]
+        if fitness:
+            return fitness <= self.max_fitness_solved[stage - 1]
+        raise ValueError("Either target or fitness must be provided")
+
     def _fitness(self, stage: int):
         pyraminx = self.pyraminx.copy()
 
