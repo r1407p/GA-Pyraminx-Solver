@@ -26,12 +26,12 @@ class PyraminxGA:
 
         self._makedir()
 
-    def _is_solved(self, stage: int, *, target: int | None = None, fitness: int | None = None):
-        if target:
-            return target == PyraminxGA.TARGET[stage - 1]
-        if fitness:
-            return self.min_fitness_solved[stage - 1] <= fitness
-        raise ValueError("Either target or fitness must be provided")
+    def _is_solved_fitness(self, stage: int, fitness: int):
+        return self.min_fitness_solved[stage - 1] <= fitness
+
+    @staticmethod
+    def _is_solved_target(stage: int, target: int):
+        return target == PyraminxGA.TARGET[stage - 1]
 
     @staticmethod
     def _gene2move(stage: int, move: int):
@@ -52,9 +52,7 @@ class PyraminxGA:
         steps = 0
         target = target_function()
         for move in moves:
-            # if self._is_solved(stage, target=target):
-            #     break
-            if target == PyraminxGA.TARGET[stage - 1]:
+            if PyraminxGA._is_solved_target(stage, target=target):
                 break
             pyraminx.move(PyraminxGA._gene2move(stage, move))
             target = max(target, target_function())
@@ -76,7 +74,7 @@ class PyraminxGA:
         ga.run()
         ga.plot_fitness(save_dir=f"{save_dir}/fitness_stage{stage}.png")
         solution, fitness, _ = ga.best_solution()
-        return PyraminxGA.StageResult(solution, fitness, ga.generations_completed, self._is_solved(stage, fitness=fitness))
+        return PyraminxGA.StageResult(solution, fitness, ga.generations_completed, self._is_solved_fitness(stage, fitness=fitness))
 
     def run(self, **kwargs):
         common_kwargs = {
