@@ -145,7 +145,7 @@ class Pyraminx(object):
                     [("R", (2, 3)), ("D", (1, 1)), ("L", (2, 1))],
                     [("R", (2, 2)), ("D", (1, 0)), ("L", (1, 0))]
                 ]
-            
+
     def __rotate_face(self, switching_trios: list, clockwise: bool):
         """
         Rotate the given switching trios in the given direction
@@ -218,7 +218,7 @@ class Pyraminx(object):
         for move in moves:
             self.move(move)
         return self.copy()
-    
+
     def mixture_moves(self, move):
         """
         Execute a sequence of moves on the Pyraminx object.
@@ -246,13 +246,36 @@ class Pyraminx(object):
             return self.multi_move(["R'", "L", "R", "L'", "U", "L'", "U'", "L"])
         else:
             return self.multi_move([move])
+
+    def small_corners_solved(self):
+        """
+        Returns True if the small corners are solved
+        """
+        correspondings = [
+            [[('L',(0,0)), ('L',(1,1))], [('F',(0,0)), ('F',(1,1))], [('R',(0,0)), ('R',(1,1))]],
+            [[('L',(2,3)), ('L',(2,4))], [('F',(2,0)), ('F',(2,1))], [('D',(2,0)), ('D',(2,1))]],
+            [[('F',(2,3)), ('F',(2,4))], [('D',(2,3)), ('D',(2,4))], [('R',(2,0)), ('R',(2,1))]],
+            [[('L',(2,0)), ('L',(2,1))], [('D',(0,0)), ('D',(1,1))], [('R',(2,3)), ('R',(2,4))]]
             
+        ]
+        matches = 0
+        for corresponding in correspondings:
+            matched = True
+            for coners in corresponding:
+                colors = [self.faces[face][cord[0]][cord[1]] for face, cord in coners]
+                if len(set(colors)) != 1:
+                    matched = False
+                    break
+            if matched:
+                matches += 1
+        return matches
 
         
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
+    print(pyramix.small_corners_solved())
     print("Shuffling...")
     pyramix.shuffle()
     pyramix.display()
