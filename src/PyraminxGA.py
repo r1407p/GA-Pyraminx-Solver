@@ -2,10 +2,19 @@ import os
 from collections import namedtuple
 
 from pygad import GA
+from Pyraminx import Pyraminx
 
 
 class PyraminxGA:
     def __init__(self):
+        self.pyraminx = Pyraminx()
+        self.pyraminx.shuffle()
+
+        self.num_genes = (8, 8, 20, 12)
+        self.max_fitness_solved = tuple(target - num_genes for target, num_genes in zip(PyraminxGA.TARGET, self.num_genes))
+
+        self.results = []
+
         self._makedir()
 
     def _is_solved(self, stage: int, *, target: int | None = None, fitness: int | None = None):
