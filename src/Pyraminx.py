@@ -1,5 +1,6 @@
 from pprint import pprint
-
+import copy
+import random
 
 class Pyraminx(object):
     def __init__(self):
@@ -16,6 +17,7 @@ class Pyraminx(object):
             "R": [["R"], ["R", "R", "R"], ["R", "R", "R", "R", "R"]],
             "D": [["B"], ["B", "B", "B"], ["B", "B", "B", "B", "B"]],
         }
+        self.shuffle_moves = []
 
     def _colorize(self, char):
         """
@@ -198,11 +200,24 @@ class Pyraminx(object):
         """
         return copy.deepcopy(self)
 
+    def shuffle(self, num_moves=24):
+        """
+        Shuffle the Pyraminx object by executing n random
+        """
+        for _ in range(num_moves):
+            move = random.choice(["L", "R", "U", "B", 'l', 'r', 'u', 'b']) + random.choice(["", "'"])
+            self.shuffle_moves.append(move)
+            self.move(move)
+
+        return self.copy()
+
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
-    # return 
+
+    pyramix.shuffle()
+    pyramix.display()
     while True:
         move = input("Enter move: ")
         if move == "q":
