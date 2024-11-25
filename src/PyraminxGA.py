@@ -1,6 +1,5 @@
 import os
 from collections import namedtuple
-from itertools import chain
 
 from pygad import GA
 from Pyraminx import Pyraminx
@@ -114,7 +113,15 @@ class PyraminxGA:
         return solved
 
     def best_solution(self):
-        return chain.from_iterable(result.solution for result in self.results)
+        pyraminx = self.pyraminx.copy()
+        aggregated_solution = []
+        for stage, result in enumerate(self.results, start=1):
+            _, steps = PyraminxGA._best_target(pyraminx, stage, result.solution)
+            moves = map(PyraminxGA._gene2move, [stage] * steps, result.solution[:steps])
+            aggregated_solution.extend(moves)
+            for move in moves:
+                pyraminx.move(move)
+        return aggregated_solution
 
     def best_solution_generation(self):
         return sum(result.generation for result in self.results)
