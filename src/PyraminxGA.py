@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+from itertools import chain
 
 from pygad import GA
 from Pyraminx import Pyraminx
@@ -103,7 +104,7 @@ class PyraminxGA:
         return solved
 
     def best_solution(self):
-        pass
+        return chain.from_iterable(result.solution for result in self.results)
 
     def best_solution_generation(self):
         pass
