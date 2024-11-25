@@ -80,7 +80,7 @@ class PyraminxGA:
             "sol_per_pop": 100,  # [100, 1000]
             "gene_type": int,
             "parent_selection_type": "tournament",
-            "keep_elitism": None,
+            "keep_elitism": 100,
             "crossover_type": "single_point",
             "crossover_probability": 0.7,  # [0.5, 0.9]
             "mutation_type": "random",  # only one gene
