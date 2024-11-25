@@ -192,6 +192,11 @@ class Pyraminx(object):
         switching_trio = self.__find__switching_trio(corner, layer)
         self.__rotate_face(switching_trio, clockwise)
 
+    def copy(self):
+        """
+        Create a deep copy of the Pyraminx object.
+        """
+        return copy.deepcopy(self)
 
 def main():
     pyramix = Pyraminx()
