@@ -24,7 +24,7 @@ class PyraminxGA:
 
         self.results = []
 
-        self._makedir()
+        PyraminxGA._makedir()
 
     def _is_solved_fitness(self, stage: int, fitness: int):
         return self.min_fitness_solved[stage - 1] <= fitness
@@ -124,7 +124,8 @@ class PyraminxGA:
     def best_solution_generation(self):
         return sum(result.generation for result in self.results)
 
-    def _makedir(self):
+    @staticmethod
+    def _makedir():
         os.chdir(f"{os.path.dirname(os.path.abspath(__file__))}/..")
         if not os.path.exists("data"):
             os.makedirs("data")
