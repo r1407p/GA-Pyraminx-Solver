@@ -43,6 +43,8 @@ class PyraminxGA:
 
     @staticmethod
     def _best_target(pyraminx: Pyraminx, stage: int, moves: list[int]):
+        pyraminx = pyraminx.copy()
+
         match stage:
             case 1:
                 target_function = pyraminx.small_corners_solved
@@ -64,13 +66,11 @@ class PyraminxGA:
 
         return target, steps
 
-    def _fitness(self, stage: int):
-        pyraminx = self.pyraminx.copy()
-
+    @staticmethod
+    def _fitness(pyraminx: Pyraminx, stage: int):
         def fitness(ga, solution, index):
             target, steps = PyraminxGA._best_target(pyraminx, stage, solution)
             return target - steps
-
         return fitness
 
     @staticmethod
