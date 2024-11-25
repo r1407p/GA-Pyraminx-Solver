@@ -21,7 +21,7 @@ class PyraminxGA:
         self.pyraminx.shuffle()
 
         self.num_genes = (8, 8, 20, 12)
-        self.max_fitness_solved = tuple(target - num_genes for target, num_genes in zip(PyraminxGA.TARGET, self.num_genes))
+        self.min_fitness_solved = tuple(target - num_genes for target, num_genes in zip(PyraminxGA.TARGET, self.num_genes))
 
         self.results = []
 
@@ -31,7 +31,7 @@ class PyraminxGA:
         if target:
             return target == PyraminxGA.TARGET[stage - 1]
         if fitness:
-            return fitness <= self.max_fitness_solved[stage - 1]
+            return self.min_fitness_solved[stage - 1] <= fitness
         raise ValueError("Either target or fitness must be provided")
 
     @staticmethod
