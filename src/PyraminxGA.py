@@ -120,7 +120,7 @@ class PyraminxGA:
         solved = True
         pyraminx = self.pyraminx.copy()
         for stage in range(1, 5):
-            self.results.append(self._run_stage(stage, fitness_func=PyraminxGA._fitness(pyraminx, stage), **(common_kwargs | stage_kwargs[stage - 1])))
+            self.results.append(self._run_stage(stage, fitness_func=PyraminxGA._fitness(pyraminx, stage), **(common_kwargs | stage_kwargs[stage - 1] | kwargs)))
             if not self.results[-1].is_solved:
                 solved = False
                 break
