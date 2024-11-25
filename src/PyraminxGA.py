@@ -96,7 +96,7 @@ class PyraminxGA:
             "on_generation": None
         }
         stage_kwargs = tuple({"fitness_func": self._fitness(stage=stage), "num_genes": num_genes, "gene_space": range(len(gene_space))}
-                             for stage, (num_genes, gene_space) in enumerate(zip(self.num_genes, PyraminxGA.GENE_SPACES)))
+                             for stage, (num_genes, gene_space) in enumerate(zip(self.num_genes, PyraminxGA.GENE_SPACES), start=1))
 
         solved = True
         for stage in range(1, 5):
