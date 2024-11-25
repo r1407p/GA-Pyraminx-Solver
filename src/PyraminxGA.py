@@ -34,6 +34,10 @@ class PyraminxGA:
             return fitness <= self.max_fitness_solved[stage - 1]
         raise ValueError("Either target or fitness must be provided")
 
+    @staticmethod
+    def _gene2move(stage: int, move: int):
+        return PyraminxGA.GENE_SPACES[stage - 1][move]
+
     def _fitness(self, stage: int):
         pyraminx = self.pyraminx.copy()
 
@@ -54,7 +58,7 @@ class PyraminxGA:
             for move in solution:
                 if self._is_solved(stage, target=target):
                     break
-                pyraminx.move(move)
+                pyraminx.move(PyraminxGA._gene2move(stage, move))
                 target = max(target, target_function())
                 steps += 1
 
@@ -74,7 +78,7 @@ class PyraminxGA:
             "num_generations": 100,  # [100, 1000]
             "num_parents_mating": 2,  # [2, 5]
             "sol_per_pop": 100,  # [100, 1000]
-            "gene_type": str,
+            "gene_type": int,
             "parent_selection_type": "tournament",
             "keep_elitism": None,
             "crossover_type": "single_point",
@@ -91,7 +95,7 @@ class PyraminxGA:
             "on_mutation": None,
             "on_generation": None
         }
-        stage_kwargs = tuple({"fitness_func": self._fitness(stage=stage), "num_genes": num_genes, "gene_space": gene_space}
+        stage_kwargs = tuple({"fitness_func": self._fitness(stage=stage), "num_genes": num_genes, "gene_space": range(len(gene_space))}
                              for stage, (num_genes, gene_space) in enumerate(zip(self.num_genes, PyraminxGA.GENE_SPACES)))
 
         solved = True
