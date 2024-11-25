@@ -38,6 +38,10 @@ class PyraminxGA:
         return PyraminxGA.GENE_SPACES[stage - 1][move]
 
     @staticmethod
+    def _genes2moves(stage: int, moves: list[int]):
+        return tuple(PyraminxGA._gene2move(stage, move) for move in moves)
+
+    @staticmethod
     def _best_target(pyraminx: Pyraminx, stage: int, moves: list[int]):
         match stage:
             case 1:
@@ -68,6 +72,18 @@ class PyraminxGA:
             return target - steps
 
         return fitness
+
+    @staticmethod
+    def _valid_moves(pyraminx: Pyraminx, stage: int, moves: list[int]):
+        _, steps = PyraminxGA._best_target(pyraminx, stage, moves)
+        return PyraminxGA._genes2moves(stage, moves[:steps])
+
+    @staticmethod
+    def _apply_valid_moves(pyraminx: Pyraminx, stage: int, moves: list[int]):
+        valid_moves = PyraminxGA._valid_moves(pyraminx, stage, moves)
+        for move in valid_moves:
+            pyraminx.move(move)
+        return valid_moves
 
     def _run_stage(self, stage: int, save_dir: str = "data", **kwargs):
         ga = GA(**kwargs)
@@ -114,11 +130,8 @@ class PyraminxGA:
         pyraminx = self.pyraminx.copy()
         aggregated_solution = []
         for stage, result in enumerate(self.results, start=1):
-            _, steps = PyraminxGA._best_target(pyraminx, stage, result.solution)
-            moves = map(PyraminxGA._gene2move, [stage] * steps, result.solution[:steps])
-            aggregated_solution.extend(moves)
-            for move in moves:
-                pyraminx.move(move)
+            valid_moves = PyraminxGA._apply_valid_moves(pyraminx, stage, result.solution)
+            aggregated_solution.extend(valid_moves)
         return aggregated_solution
 
     def best_solution_generation(self):
