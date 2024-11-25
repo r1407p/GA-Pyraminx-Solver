@@ -6,6 +6,15 @@ from Pyraminx import Pyraminx
 
 
 class PyraminxGA:
+    NUM_STAGES = 4
+    GENE_SPACES = (("r", "l", "b", "u", "r'", "l'", "b'", "u'"),
+                   ("R", "L", "B", "U", "R'", "L'", "B'", "U'"),
+                   ("E", "F", "G", "H", "I", "J", "U", "U'"),
+                   ("X", "Y", "Z", "U", "U'"))
+    TARGET = (4, 4, 3, 4)
+
+    StageResult = namedtuple("StageResult", ["solution", "fitness", "generation", "is_solved"])
+
     def __init__(self):
         self.pyraminx = Pyraminx()
         self.pyraminx.shuffle()
