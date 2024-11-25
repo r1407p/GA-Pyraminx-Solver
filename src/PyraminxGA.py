@@ -90,7 +90,7 @@ class PyraminxGA:
         ga.run()
         ga.plot_fitness(save_dir=f"{save_dir}/fitness_stage{stage}.png")
         solution, fitness, _ = ga.best_solution()
-        return PyraminxGA.StageResult(solution, fitness, ga.generations_completed, self._is_solved_fitness(stage, fitness=fitness))
+        return PyraminxGA.StageResult(solution, fitness, ga.best_solution_generation, self._is_solved_fitness(stage, fitness=fitness))
 
     def run(self, **kwargs):
         common_kwargs = {
