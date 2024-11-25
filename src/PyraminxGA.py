@@ -107,7 +107,7 @@ class PyraminxGA:
         return chain.from_iterable(result.solution for result in self.results)
 
     def best_solution_generation(self):
-        pass
+        return sum(result.generation for result in self.results)
 
     def _makedir(self):
         os.chdir(f"{os.path.dirname(os.path.abspath(__file__))}/..")
