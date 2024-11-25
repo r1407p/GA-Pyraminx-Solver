@@ -101,7 +101,7 @@ class PyraminxGA:
         solved = True
         for stage in range(1, 5):
             self.results.append(self._run_stage(stage, **(common_kwargs | stage_kwargs[stage - 1])))
-            if not self._is_solved(stage, fitness=self.results[-1].fitness):
+            if not self.results[-1].is_solved:
                 solved = False
                 break
 
