@@ -8,6 +8,34 @@ class PyraminxGA:
     def __init__(self):
         self._makedir()
 
+    def _fitness(self, stage: int):
+        pyraminx = self.pyraminx.copy()
+
+        def fitness(ga, solution, index):
+            match stage:
+                case 1:
+                    target_function = pyraminx.small_corners_solved
+                case 2:
+                    target_function = pyraminx.large_corners_solved
+                case 3:
+                    target_function = pyraminx.middle_pieces_solved
+                case 4:
+                    target_function = pyraminx.sum_num_colors_on_a_face
+
+            steps = 0
+            target = target_function()
+
+            for move in solution:
+                if self._is_solved(stage, target=target):
+                    break
+                pyraminx.move(move)
+                target = max(target, target_function())
+                steps += 1
+
+            return target - steps
+
+        return fitness
+
     def _run_stage(self, stage: int, save_dir: str = "data", **kwargs):
         ga = GA(**kwargs)
         ga.run()
