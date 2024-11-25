@@ -211,11 +211,49 @@ class Pyraminx(object):
 
         return self.copy()
 
+    def multi_move(self, moves):
+        """
+        Execute a sequence of moves on the Pyraminx object.
+        """
+        for move in moves:
+            self.move(move)
+        return self.copy()
+    
+    def mixture_moves(self, move):
+        """
+        Execute a sequence of moves on the Pyraminx object.
+        """
+        # E(R U’ R’), F(L’ U L), G(B U’ B’), H(B’ U B), I(R’ U R), J(L U’ L’), U, U’
+        # X(R U’ R’ U’ R U’ R’), Y(R U R’ U R U R’), Z(R’ L R L’ U L’ U’ L), U, U’
+
+        if move == "E":
+            return self.multi_move(["R", "U'", "R'"])
+        elif move == "F":
+            return self.multi_move(["L'", "U", "L"])
+        elif move == "G":
+            return self.multi_move(["B", "U'", "B'"])
+        elif move == "H":
+            return self.multi_move(["B'", "U", "B"])
+        elif move == "I":
+            return self.multi_move(["R'", "U", "R"])
+        elif move == "J":
+            return self.multi_move(["L", "U'", "L'"])
+        elif move == "X":
+            return self.multi_move(["R", "U'", "R'", "U'", "R", "U'", "R'"])
+        elif move == "Y":
+            return self.multi_move(["R", "U", "R'", "U", "R", "U", "R'"])
+        elif move == "Z":
+            return self.multi_move(["R'", "L", "R", "L'", "U", "L'", "U'", "L"])
+        else:
+            return self.multi_move([move])
+            
+
+        
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
     pyramix.display()
-
+    print("Shuffling...")
     pyramix.shuffle()
     pyramix.display()
     while True:
