@@ -42,7 +42,7 @@ class PyraminxGA:
         return tuple(PyraminxGA._gene2move(stage, move) for move in moves)
 
     @staticmethod
-    def _best_target(pyraminx: Pyraminx, stage: int, moves: list[int]):
+    def _best_target(pyraminx: Pyraminx, stage: int, genes: list[int]):
         pyraminx = pyraminx.copy()
 
         match stage:
@@ -57,10 +57,10 @@ class PyraminxGA:
 
         steps = 0
         target = target_function()
-        for move in moves:
+        for gene in genes:
             if PyraminxGA._is_solved_target(stage, target=target):
                 break
-            pyraminx.move(PyraminxGA._gene2move(stage, move))
+            pyraminx.move(PyraminxGA._gene2move(stage, gene))
             target = max(target, target_function())
             steps += 1
 
