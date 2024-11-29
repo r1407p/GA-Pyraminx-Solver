@@ -117,16 +117,14 @@ class PyraminxGA:
         stage_kwargs = tuple({"num_genes": num_genes, "gene_space": range(len(gene_space))}
                              for num_genes, gene_space in zip(self.num_genes, PyraminxGA.GENE_SPACES))
 
-        solved = True
         pyraminx = self.pyraminx.copy()
         for stage in range(1, 5):
             self.results.append(self._run_stage(stage, fitness_func=PyraminxGA._fitness(pyraminx, stage), **(common_kwargs | stage_kwargs[stage - 1] | kwargs)))
             if not self.results[-1].is_solved:
-                solved = False
                 break
             PyraminxGA._apply_valid_moves(pyraminx, stage, self.results[-1].solution)
 
-        return solved
+        return self.results[-1].is_solved
 
     def best_solution(self):
         pyraminx = self.pyraminx.copy()
