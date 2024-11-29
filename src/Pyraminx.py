@@ -270,21 +270,38 @@ class Pyraminx(object):
                 matches += 1
         return matches
 
+    def large_corners_solved(self):
+        pass
+
+    def middle_pieces_solved(self):
+        pass
+
+    def sum_num_colors_on_a_face(self):
+        colors_in_faces = {}
+        for face in self.faces:
+            print(face)
+            colors = set()
+            for layer in self.faces[face]:
+                for pixel in layer:
+                    colors.add(pixel)
+            colors_in_faces[face] = colors
+        return [len(colors) for face, colors in colors_in_faces.items()]
         
 def main():
-    pyramix = Pyraminx()
-    pprint(pyramix.faces)
-    pyramix.display()
-    print(pyramix.small_corners_solved())
+    pyraminx = Pyraminx()
+    pprint(pyraminx.faces)
+    pyraminx.display()
+
     print("Shuffling...")
-    pyramix.shuffle()
-    pyramix.display()
+    pyraminx.shuffle()
+    pyraminx.display()
+
     while True:
         move = input("Enter move: ")
         if move == "q":
             break
-        pyramix.move(move, display=True)
-        pyramix.display()
+        pyraminx.move(move, display=True)
+        pyraminx.display()
 
 
 if __name__ == "__main__":
