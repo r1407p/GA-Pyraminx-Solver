@@ -1,6 +1,7 @@
 from pprint import pprint
 import copy
 import random
+from collections import defaultdict
 
 class Pyraminx(object):
     def __init__(self):
@@ -285,20 +286,35 @@ class Pyraminx(object):
             solved += 1
         if self.faces["L"][2][2] == self.faces["L"][2][3] and self.faces["D"][1][2] == self.faces["D"][2][4]:
             solved += 1
-        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][2][2] == self.faces["D"][2][0]:
+        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][1][0] == self.faces["D"][2][0]:
             solved += 1
         return solved
 
-    def sum_num_colors_on_a_face(self):
+    def num_colors_on_a_face(self):
         colors_in_faces = {}
         for face in self.faces:
-            print(face)
             colors = set()
             for layer in self.faces[face]:
                 for pixel in layer:
                     colors.add(pixel)
             colors_in_faces[face] = colors
         return [len(colors) for face, colors in colors_in_faces.items()]
+
+
+    def entropy(self):
+        entropies = []
+        for face in self.faces:
+            colors = {
+                "Y": 0,
+                "G": 0,
+                "R": 0,
+                "B": 0,
+            }
+            for layer in self.faces[face]:
+                for pixel in layer:
+                    colors[pixel] += 1
+            entropies.append([count for color, count in colors.items()])
+        return entropies
 
 def main():
     pyraminx = Pyraminx()
@@ -308,6 +324,7 @@ def main():
     print("Shuffling...")
     pyraminx.shuffle()
     pyraminx.display()
+
 
 
     while True:
