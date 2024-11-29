@@ -271,7 +271,13 @@ class Pyraminx(object):
         return matches
 
     def large_corners_solved(self):
-        pass
+        solved = 0
+        cornors = [(0,0),(1,1),(2,0),(2,1),(2,3),(2,4)]
+        for face in self.faces:
+            colors = [self.faces[face][cord[0]][cord[1]] for cord in cornors]
+            if len(set(colors)) == 1:
+                solved += 1
+        return solved
 
     def middle_pieces_solved(self):
         pass
@@ -291,17 +297,19 @@ def main():
     pyraminx = Pyraminx()
     pprint(pyraminx.faces)
     pyraminx.display()
-
+    print(pyraminx.large_corners_solved())
     print("Shuffling...")
     pyraminx.shuffle()
     pyraminx.display()
-
+    print(pyraminx.large_corners_solved())
+    
     while True:
         move = input("Enter move: ")
         if move == "q":
             break
         pyraminx.move(move, display=True)
         pyraminx.display()
+        print(pyraminx.large_corners_solved())
 
 
 if __name__ == "__main__":
