@@ -270,7 +270,16 @@ class Pyraminx(object):
                 matches += 1
         return matches
 
-        
+    def large_corners_solved(self):
+        return random.randint(0, 4)
+
+    def middle_pieces_solved(self):
+        return random.randint(0, 3)
+
+    def num_colors_on_a_face(self):
+        return [random.randint(1, 3) for _ in self.faces]
+
+
 def main():
     pyramix = Pyraminx()
     pprint(pyramix.faces)
