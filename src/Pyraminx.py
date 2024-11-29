@@ -286,7 +286,7 @@ class Pyraminx(object):
             solved += 1
         if self.faces["L"][2][2] == self.faces["L"][2][3] and self.faces["D"][1][2] == self.faces["D"][2][4]:
             solved += 1
-        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][2][2] == self.faces["D"][2][0]:
+        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][1][0] == self.faces["D"][2][0]:
             solved += 1
         return solved
 
