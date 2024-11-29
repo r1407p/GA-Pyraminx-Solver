@@ -60,7 +60,7 @@ class PyraminxGA:
         for gene in genes:
             if PyraminxGA._is_solved_target(stage, target=target):
                 break
-            pyraminx.move(PyraminxGA._gene2move(stage, gene))
+            pyraminx.mixture_moves(PyraminxGA._gene2move(stage, gene))
             target = max(target, target_function())
             steps += 1
 
@@ -82,7 +82,7 @@ class PyraminxGA:
     def _apply_valid_moves(pyraminx: Pyraminx, stage: int, moves: list[int]):
         valid_moves = PyraminxGA._valid_moves(pyraminx, stage, moves)
         for move in valid_moves:
-            pyraminx.move(move)
+            pyraminx.mixture_moves(move)
         return valid_moves
 
     def _run_stage(self, stage: int, save_dir: str = "data", **kwargs):
