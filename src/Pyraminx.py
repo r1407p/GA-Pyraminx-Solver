@@ -181,13 +181,13 @@ class Pyraminx(object):
     def rotate(self, corner: str, clockwise: bool, layer: int, display=False):
         """
         Rotate the Pyraminx according to the given move
-        
+
         args:
             corner (str): The corner to be rotated
             clockwise (bool): The direction of the rotation
             layer (int): The layer to be rotated
             display (bool): Whether to display the Pyraminx after the rotation
-        
+
         """
         if display:
             print(f"Rotate {corner} with clockwise={clockwise} and layer={layer}")
@@ -256,7 +256,7 @@ class Pyraminx(object):
             [[('L',(2,3)), ('L',(2,4))], [('F',(2,0)), ('F',(2,1))], [('D',(2,0)), ('D',(2,1))]],
             [[('F',(2,3)), ('F',(2,4))], [('D',(2,3)), ('D',(2,4))], [('R',(2,0)), ('R',(2,1))]],
             [[('L',(2,0)), ('L',(2,1))], [('D',(0,0)), ('D',(1,1))], [('R',(2,3)), ('R',(2,4))]]
-            
+
         ]
         matches = 0
         for corresponding in correspondings:
@@ -271,29 +271,52 @@ class Pyraminx(object):
         return matches
 
     def large_corners_solved(self):
-        return random.randint(0, 4)
+        solved = 0
+        cornors = [(0,0),(1,1),(2,0),(2,1),(2,3),(2,4)]
+        for face in self.faces:
+            colors = [self.faces[face][cord[0]][cord[1]] for cord in cornors]
+            if len(set(colors)) == 1:
+                solved += 1
+        return solved
 
     def middle_pieces_solved(self):
-        return random.randint(0, 3)
+        solved = 0
+        if self.faces["F"][2][2] == self.faces["F"][2][3] and self.faces["D"][2][2] == self.faces["D"][2][3]:
+            solved += 1
+        if self.faces["L"][2][2] == self.faces["L"][2][3] and self.faces["D"][1][2] == self.faces["D"][2][4]:
+            solved += 1
+        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][2][2] == self.faces["D"][2][0]:
+            solved += 1
+        return solved
 
-    def num_colors_on_a_face(self):
-        return [random.randint(1, 3) for _ in self.faces]
-
+    def sum_num_colors_on_a_face(self):
+        colors_in_faces = {}
+        for face in self.faces:
+            print(face)
+            colors = set()
+            for layer in self.faces[face]:
+                for pixel in layer:
+                    colors.add(pixel)
+            colors_in_faces[face] = colors
+        return [len(colors) for face, colors in colors_in_faces.items()]
 
 def main():
-    pyramix = Pyraminx()
-    pprint(pyramix.faces)
-    pyramix.display()
-    print(pyramix.small_corners_solved())
+    pyraminx = Pyraminx()
+    pprint(pyraminx.faces)
+    pyraminx.display()
+
     print("Shuffling...")
-    pyramix.shuffle()
-    pyramix.display()
+    pyraminx.shuffle()
+    pyraminx.display()
+
+
     while True:
         move = input("Enter move: ")
         if move == "q":
             break
-        pyramix.move(move, display=True)
-        pyramix.display()
+        pyraminx.move(move, display=True)
+        pyraminx.display()
+
 
 
 if __name__ == "__main__":
