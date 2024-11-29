@@ -280,7 +280,14 @@ class Pyraminx(object):
         return solved
 
     def middle_pieces_solved(self):
-        pass
+        solved = 0
+        if self.faces["F"][2][2] == self.faces["F"][2][3] and self.faces["D"][2][2] == self.faces["D"][2][3]:
+            solved += 1
+        if self.faces["L"][2][2] == self.faces["L"][2][3] and self.faces["D"][1][2] == self.faces["D"][2][4]:
+            solved += 1
+        if self.faces["R"][2][2] == self.faces["R"][1][0] and self.faces["D"][2][2] == self.faces["D"][2][0]:
+            solved += 1
+        return solved
 
     def sum_num_colors_on_a_face(self):
         colors_in_faces = {}
@@ -297,11 +304,11 @@ def main():
     pyraminx = Pyraminx()
     pprint(pyraminx.faces)
     pyraminx.display()
-    print(pyraminx.large_corners_solved())
+
     print("Shuffling...")
     pyraminx.shuffle()
     pyraminx.display()
-    print(pyraminx.large_corners_solved())
+
     
     while True:
         move = input("Enter move: ")
@@ -309,7 +316,7 @@ def main():
             break
         pyraminx.move(move, display=True)
         pyraminx.display()
-        print(pyraminx.large_corners_solved())
+
 
 
 if __name__ == "__main__":
