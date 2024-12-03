@@ -3,6 +3,7 @@ from collections import namedtuple
 from enum import Enum
 
 from pygad import GA
+
 from Pyraminx import Pyraminx
 
 
