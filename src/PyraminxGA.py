@@ -52,19 +52,20 @@ class PyraminxGA:
     def _best_target(pyraminx: Pyraminx, stage: int, genes: list[int]):
         pyraminx = pyraminx.copy()
 
-        match stage:
-            case 0:
-                def target_function():
+        def target_function():
+            match stage:
+                case 0:
                     return pyraminx.small_corners_solved() + pyraminx.large_corners_solved() + pyraminx.middle_pieces_solved() + sum(pyraminx.num_colors_on_a_face())
-            case 1:
-                target_function = pyraminx.small_corners_solved
-            case 2:
-                target_function = pyraminx.large_corners_solved
-            case 3:
-                target_function = pyraminx.middle_pieces_solved
-            case 4:
-                def target_function():
+                case 1:
+                    return pyraminx.small_corners_solved()
+                case 2:
+                    return pyraminx.large_corners_solved()
+                case 3:
+                    return pyraminx.middle_pieces_solved()
+                case 4:
                     return sum(pyraminx.num_colors_on_a_face())
+                case _:
+                    return 0
 
         steps = 0
         target = target_function()
