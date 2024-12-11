@@ -88,5 +88,5 @@ def plot(mode: PyraminxGA.Mode, x, y, x_label: str, y_label: str, data_dir: str 
     plt.xticks(x)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    plt.savefig(f"{data_dir}/{mode}_{x_label}_{y_label}.png")
+    plt.savefig(f"{data_dir}/{'-'.join(x_label.split(sep=' '))}_{'-'.join(y_label.split(sep=' '))}.png")
     plt.close()
