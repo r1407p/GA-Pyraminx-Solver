@@ -24,7 +24,7 @@ def main():
             else:
                 test(pyraminx=pyraminx, mode=mode, num_genes=num_genes, num_generations=1024, sol_per_pop=sol_per_pop)
 
-        data_dir = f"data.{num_genes}.{crossover_type}"
+        data_dir = "data/expert" if mode == PyraminxGA.Mode.EXPERT else "data/naive"
         aggregate_test_results(data_dir=data_dir)
 
         if isinstance(num_genes, tuple):

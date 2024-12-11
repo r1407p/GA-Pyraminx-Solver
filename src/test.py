@@ -32,10 +32,10 @@ def test(pyraminx: Pyraminx, mode: PyraminxGA.Mode, num_test: int = 30, accept_r
     }
 
     kwargs = default_kwargs | kwargs
-    data_dir = f"data.{num_genes}.{kwargs["crossover_type"]}"
-    save_dir = f"{mode}_{kwargs["sol_per_pop"]}"
+    data_dir = "data/expert" if mode == PyraminxGA.Mode.EXPERT else "data/naive"
+    save_dir = f"{kwargs["sol_per_pop"]}"
 
-    print(f"testing {num_genes=} crossover_type={kwargs["crossover_type"]} mode={mode} population_size={kwargs["sol_per_pop"]} ...")
+    print(f"testing mode={mode} population_size={kwargs["sol_per_pop"]} ...")
 
     pga = PyraminxGA(pyraminx=pyraminx, accept_ratio=accept_ratio, num_genes=num_genes, data_dir=data_dir)
     for i in range(num_test):
@@ -64,13 +64,13 @@ def aggregate_test_results(data_dir: str = "data"):
                 with open(f"{data_dir}/{config}/pyraminx.txt", "r") as f:
                     lines = f.readlines()
 
-                parameters = config.split(sep='_')
-                if parameters[1] == "SCRATCH":
+                parameters = data_dir.split(sep='/')
+                if parameters[-1] == "naive":
                     mode = PyraminxGA.Mode.FROM_SCRATCH
-                    sol_per_pop = int(parameters[2])
+                    sol_per_pop = int(config)
                 else:
                     mode = PyraminxGA.Mode.EXPERT
-                    sol_per_pop = int(parameters[1])
+                    sol_per_pop = int(config)
 
                 aggregated.write(f"{mode=}, {sol_per_pop=:4d}\n")
                 aggregated.write(f"\tis_solved = {[line.split(':')[1].strip() == "True" for line in lines if line.startswith('\tis solved:')]}\n")
