@@ -79,7 +79,7 @@ def aggregate_test_results(data_dir: str = "data"):
                 aggregated.write(f"\tnum_generations = {[int(line.split(':')[1].strip()) for line in lines if line.startswith('\tnumber of generation:')]}\n")
 
 
-def plot(mode: PyraminxGA.Mode, x, y, x_label: str, y_label: str, data_dir: str = "data"):
+def plot(x, y, x_label: str, y_label: str, data_dir: str = "data"):
     plt.figure(figsize=(10, 8))
 
     sns.lineplot(x=x, y=y, label=y_label, color="blue", alpha=0.6)
