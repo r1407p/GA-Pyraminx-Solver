@@ -44,12 +44,12 @@ def test(pyraminx: Pyraminx, mode: PyraminxGA.Mode, num_test: int = 30, accept_r
         solved = pga.run(mode=mode, save_dir=save_dir, index=i, verbose=verbose, **kwargs)
         best = pga.best_solution(expand=False)
         best_expanded = PyraminxGA._expand_high_level_moves(best)
-        # with open(f"{data_dir}/{save_dir}/pyraminx.txt", "a+") as f:
-        #     f.write(f"{i}th run\n"
-        #             f"\tis solved: {solved}\n"
-        #             f"\tlength of best solution: {len(best)}\n"
-        #             f"\tlength of expanded best solution: {len(best_expanded)}\n"
-        #             f"\tnumber of generation: {pga.best_solution_generation()}\n")
+        with open(f"{data_dir}/{save_dir}/pyraminx.txt", "a+") as f:
+            f.write(f"{i}th run\n"
+                    f"\tis solved: {solved}\n"
+                    f"\tlength of best solution: {len(best)}\n"
+                    f"\tlength of expanded best solution: {len(best_expanded)}\n"
+                    f"\tnumber of generation: {pga.best_solution_generation()}\n")
 
 
 def set_seed(seed):
