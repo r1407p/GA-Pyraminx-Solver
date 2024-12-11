@@ -23,8 +23,7 @@ def test(pyraminx: Pyraminx, mode: PyraminxGA.Mode, num_test: int = 30, accept_r
         "mutation_type": "random",  # only one gene
         "mutation_probability": 0.05,  # [0.01, 0.1]
         "mutation_by_replacement": True,
-        "mutation_percent_genes": 'default',  # based on population size and the number of generations
-        "mutation_num_genes": None,  # number of genes in each solution will be randomly selected for mutation, covering mutation_percent_genes
+        "mutation_num_genes": 1,  # number of genes in each solution will be randomly selected for mutation, covering mutation_percent_genes
         "on_start": PyraminxGA._on_start,
         "on_fitness": None,
         "on_parents": None,
