@@ -55,13 +55,12 @@ def main():
                     "mean_num_generations": np.mean(num_generations) if num_generations else 100,
                 }
 
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["num_solved"] for sol_per_pop in population_size), x_label="Population Size", y_label="Number of Success", data_dir=data_dir)
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_len_best_solution"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Length of Best Solution", data_dir=data_dir)
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["min_len_best_solution"] for sol_per_pop in population_size), x_label="Population Size", y_label="Minimum Length of Best Solution", data_dir=data_dir)
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Length of Expanded Best Solution", data_dir=data_dir)
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["min_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Minimum Length of Expanded Best Solution", data_dir=data_dir)
-        plot(mode=mode, x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_num_generations"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Generation to Achieve Best Solution", data_dir=data_dir)
-
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["num_solved"] for sol_per_pop in population_size), x_label="Population Size", y_label="Number of Success", data_dir=data_dir)
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_len_best_solution"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Length of Best Solution", data_dir=data_dir)
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["min_len_best_solution"] for sol_per_pop in population_size), x_label="Population Size", y_label="Minimum Length of Best Solution", data_dir=data_dir)
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Length of Expanded Best Solution", data_dir=data_dir)
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["min_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Minimum Length of Expanded Best Solution", data_dir=data_dir)
+        plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_num_generations"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Generation to Achieve Best Solution", data_dir=data_dir)
 
 if __name__ == "__main__":
     main()
