@@ -23,12 +23,12 @@ def test(pyraminx: Pyraminx, mode: PyraminxGA.Mode, num_test: int = 30, accept_r
         "mutation_probability": 0.05,  # [0.01, 0.1]
         "mutation_by_replacement": True,
         "mutation_num_genes": 1,  # number of genes in each solution will be randomly selected for mutation, covering mutation_percent_genes
-        "on_start": PyraminxGA._on_start,
+        "on_start": PyraminxGA._on_start if verbose else None,
         "on_fitness": None,
         "on_parents": None,
         "on_crossover": None,
         "on_mutation": None,
-        "on_generation": PyraminxGA._on_generation
+        "on_generation": PyraminxGA._on_generation if verbose else None
     }
 
     kwargs = default_kwargs | kwargs
@@ -39,7 +39,8 @@ def test(pyraminx: Pyraminx, mode: PyraminxGA.Mode, num_test: int = 30, accept_r
 
     pga = PyraminxGA(pyraminx=pyraminx, accept_ratio=accept_ratio, num_genes=num_genes, data_dir=data_dir)
     for i in range(num_test):
-        print(f"{i} th test ...")
+        if verbose:
+            print(f"{i} th test ...")
         solved = pga.run(mode=mode, save_dir=save_dir, index=i, verbose=verbose, **kwargs)
         best = pga.best_solution(expand=False)
         best_expanded = PyraminxGA._expand_high_level_moves(best)
