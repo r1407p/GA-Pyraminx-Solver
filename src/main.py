@@ -1,9 +1,8 @@
-from test import aggregate_test_results, plot, set_seed, test
-
 import numpy as np
 
 from Pyraminx import Pyraminx
 from PyraminxGA import PyraminxGA
+from test import aggregate_test_results, plot, set_seed, test
 
 
 def main():
