@@ -1,7 +1,9 @@
 import os
 import random
+from itertools import chain
 
 import numpy as np
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -83,6 +85,23 @@ def plot(x, y, x_label: str, y_label: str, data_dir: str = "data"):
     plt.figure(figsize=(10, 8))
 
     sns.lineplot(x=x, y=y, label=y_label, color="blue", alpha=0.6)
+
+    plt.title(f"{y_label} Accross {x_label}")
+    plt.xticks(x)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.savefig(f"{data_dir}/{'-'.join(x_label.split(sep=' '))}_{'-'.join(y_label.split(sep=' '))}.png")
+    plt.close()
+
+def multiplot(x, ys, names, x_label: str, y_label: str, data_dir: str = "data"):
+    data = pd.DataFrame({"x": tuple(x) * len(names), "y": tuple(chain.from_iterable(ys)), "name": [name for name in names for _ in x]})
+
+    plt.figure(figsize=(10, 8))
+
+    sns.lineplot(data=data, x="x", y="y", hue="name")
+    plt.subplots_adjust(bottom=0.2)
+
+    plt.legend(title="Names", loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=len(names))
 
     plt.title(f"{y_label} Accross {x_label}")
     plt.xticks(x)
