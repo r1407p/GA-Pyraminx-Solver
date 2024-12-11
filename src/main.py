@@ -2,7 +2,7 @@ import numpy as np
 
 from Pyraminx import Pyraminx
 from PyraminxGA import PyraminxGA
-from test import aggregate_test_results, plot, set_seed, test
+from test import aggregate_test_results, multiplot, plot, set_seed, test
 
 
 def main():
@@ -13,6 +13,7 @@ def main():
                       'R': [['G'], ['Y', 'G', 'G'], ['G', 'G', 'R', 'R', 'B']]}
 
     population_size = range(2, 34, 2)
+    testing_results = {}
 
     for mode in (PyraminxGA.Mode.EXPERT, PyraminxGA.Mode.FROM_SCRATCH):
         num_genes = (8, 8, 18, 6) if mode == PyraminxGA.Mode.EXPERT else 24
@@ -32,7 +33,6 @@ def main():
         else:
             max_len_solution = num_genes
 
-        testing_results = {}
         with open(f"{data_dir}/aggregated.txt", "r") as f:
             lines = f.readlines()
             for i in range(0, len(lines), 5):
@@ -61,6 +61,64 @@ def main():
         plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Length of Expanded Best Solution", data_dir=data_dir)
         plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["min_len_best_solution_expanded"] for sol_per_pop in population_size), x_label="Population Size", y_label="Minimum Length of Expanded Best Solution", data_dir=data_dir)
         plot(x=population_size, y=tuple(testing_results[(mode, sol_per_pop)]["mean_num_generations"] for sol_per_pop in population_size), x_label="Population Size", y_label="Mean Generation to Achieve Best Solution", data_dir=data_dir)
+
+
+    multiplot(
+        population_size,
+        [
+            [testing_results[(mode, sol_per_pop)]["num_solved"] for sol_per_pop in population_size]
+            for mode in [PyraminxGA.Mode.EXPERT, PyraminxGA.Mode.FROM_SCRATCH]
+        ],
+        ["Human-like", "Brute Force"],
+        x_label="Population Size",
+        y_label="Number of Success in 30 trials",
+        data_dir="data",
+    )
+    multiplot(
+        population_size,
+        [
+            [testing_results[(mode, sol_per_pop)]["mean_len_best_solution"] for sol_per_pop in population_size]
+            for mode in [PyraminxGA.Mode.EXPERT, PyraminxGA.Mode.FROM_SCRATCH]
+        ]
+        + [
+            [
+                testing_results[(PyraminxGA.Mode.EXPERT, sol_per_pop)]["mean_len_best_solution_expanded"]
+                for sol_per_pop in population_size
+            ]
+        ],
+        ["Human-like: Original", "Brute Force", "Human-like: Expanded"],
+        x_label="Population Size",
+        y_label="Mean Length of Best Solution",
+        data_dir="data",
+    )
+    multiplot(
+        population_size,
+        [
+            [testing_results[(mode, sol_per_pop)]["mean_num_generations"] for sol_per_pop in population_size]
+            for mode in [PyraminxGA.Mode.EXPERT, PyraminxGA.Mode.FROM_SCRATCH]
+        ],
+        ["Human-like", "Brute Force"],
+        x_label="Population Size",
+        y_label="Mean Number of Generations to Achieve Best Solution",
+        data_dir="data",
+    )
+    multiplot(
+        population_size,
+        [
+            [testing_results[(mode, sol_per_pop)]["min_len_best_solution"] for sol_per_pop in population_size]
+            for mode in [PyraminxGA.Mode.EXPERT, PyraminxGA.Mode.FROM_SCRATCH]
+        ]
+        + [
+            [
+                testing_results[(PyraminxGA.Mode.EXPERT, sol_per_pop)]["min_len_best_solution_expanded"]
+                for sol_per_pop in population_size
+            ]
+        ],
+        ["Human-like: Original", "Brute Force", "Human-like: Expanded"],
+        x_label="Population Size",
+        y_label="Minimum Length of Best Solution",
+        data_dir="data",
+    )
 
 if __name__ == "__main__":
     main()
